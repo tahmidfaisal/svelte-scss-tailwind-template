@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 	import Tailwindcss from './Tailwindcss.svelte';
 	import "../node_modules/bulma/css/bulma.css";
-	export let name;
+	export let name: string;
 </script>
 
 <Tailwindcss />
