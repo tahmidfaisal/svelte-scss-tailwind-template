@@ -1,13 +1,13 @@
 <script>
 	import Tailwindcss from './Tailwindcss.svelte';
-
+	import "../node_modules/bulma/css/bulma.css";
 	export let name;
 </script>
 
 <Tailwindcss />
 <main>
-	<button class="hover:!bg-red-700 !bg-blue-100">Hello {name}!</button>
+	<button class="box hover:!bg-red-700 !bg-blue-100">Hello {name}!</button>
 </main>
 
-<style>
+<style style="scss">
 </style>
