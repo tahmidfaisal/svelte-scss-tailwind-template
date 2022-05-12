@@ -17,7 +17,7 @@
 		}
 	});
 	$: {
-		(theme);
+		theme;
 		if (
 			localStorage.theme === "dark" ||
 			(!("theme" in localStorage) &&
@@ -48,11 +48,13 @@
 			localStorage.theme === "dark" ||
 			(!("theme" in localStorage) &&
 				window.matchMedia("(prefers-color-scheme: dark)").matches)
-		) {8
-		document.documentElement.classList.add("dark");
+		) {
+			document.documentElement.classList.add("dark");
+			localStorage.theme = "dark";
 			theme = "dark";
 		} else {
 			document.documentElement.classList.remove("dark");
+			localStorage.theme = "light";
 			theme = "light";
 		}
 	};
