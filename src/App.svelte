@@ -1,83 +1,52 @@
 <script lang="ts">
 	import Tailwindcss from "./Tailwindcss.svelte";
 	import "../node_modules/bulma/css/bulma.css";
-	import { onMount } from "svelte";
 	export let name: string;
 
-	let theme: string;
-	onMount(() => {
-		if (
-			localStorage.theme === "dark" ||
-			(!("theme" in localStorage) &&
-				window.matchMedia("(prefers-color-scheme: dark)").matches)
-		) {
-			document.documentElement.classList.add("dark");
-		} else {
-			document.documentElement.classList.remove("dark");
-		}
-	});
+	// create a local storage theme variable and create functions to change theme to light, dark or default
+	let theme: "dark"|"light" = localStorage.getItem("theme");
+
 	$: {
-		theme;
-		if (
-			localStorage.theme === "dark" ||
-			(!("theme" in localStorage) &&
-				window.matchMedia("(prefers-color-scheme: dark)").matches)
-		) {
-			document.documentElement.classList.add("dark");
-		} else {
-			document.documentElement.classList.remove("dark");
+		if (theme=="dark") {
+			document.documentElement.classList.add('dark');
+		}
+		else {
+			document.documentElement.classList.remove('dark');
 		}
 	}
 
-	// Whenever the user explicitly chooses light mode
-	const lightTheme = () => {
-		localStorage.theme = "light";
-		theme = "light";
-	};
-
-	// Whenever the user explicitly chooses dark mode
-
-	const darkTheme = () => {
-		localStorage.theme = "dark";
-		theme = "dark";
-	};
-
-	// Whenever the user explicitly chooses to respect the OS preference
-	const systemTheme = () => {
-		if (
-			localStorage.theme === "dark" ||
-			(!("theme" in localStorage) &&
-				window.matchMedia("(prefers-color-scheme: dark)").matches)
-		) {
-			document.documentElement.classList.add("dark");
-			localStorage.theme = "dark";
-			theme = "dark";
-		} else {
-			document.documentElement.classList.remove("dark");
-			localStorage.theme = "light";
-			theme = "light";
+	if (theme == null) {
+		let newTheme;
+		if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+				newTheme = "dark";
 		}
-	};
-
-	const toggleTheme = () => {
-		if (localStorage.theme === "light") {
-			darkTheme();
-		} else if (localStorage.theme === "dark") {
-			lightTheme();
-		} else {
-			throw Error("Unknown theme");
+		else {
+				newTheme = "light";
 		}
-	};
+		localStorage.setItem("theme", newTheme);
+	}
+	function changeTheme(newTheme: "dark"|"light"|"default") {
+		if (newTheme=="default") {
+			//get system theme
+			if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+				newTheme = "dark";
+			}
+			else {
+				newTheme = "light";
+			}
+			return
+		}
+		else if (newTheme=="dark" | newTheme=="light" ) localStorage.setItem("theme", newTheme);
+		else throw new Error("Invalid theme");
+		theme = newTheme;
+	}
+
+
 </script>
 
 <Tailwindcss />
-<main>
-	{localStorage.theme}
-	<button
-		on:click={toggleTheme}
-		class="box hover:!bg-red-700 !bg-blue-100 dark:!bg-gray-400"
-		>Hello {name}!</button
-	>
+<main
+	<button class="box hover:!bg-red-700 !bg-yellow-100 dark:!bg-gray-400">Hello {name}!</button>
 </main>
 
 <style style="scss">
