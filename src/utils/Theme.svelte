@@ -1,6 +1,7 @@
 <script lang="ts">
     type ThemeT = "dark" | "light";
 
+    // add dark class to body if theme is dark (for tailwind)
     function _themeUpdated(theme: ThemeT) {
         if (theme == "dark") {
             document.documentElement.classList.add("dark");
@@ -8,7 +9,7 @@
             document.documentElement.classList.remove("dark");
         } else console.log("Invalid theme");
     }
-    // create a local storage theme variable and create functions to change theme to light, dark or default
+    // create a local storage theme variable and create functions to change theme to light, dark
     export let theme: ThemeT = localStorage.getItem("theme") as ThemeT;
 
     if (theme == null) {
